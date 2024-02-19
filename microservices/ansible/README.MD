@@ -20,3 +20,12 @@ ansible_connection=ssh
 ansible_user=bs
 ansible_ssh_pass=1234
 ```
+
+Сработает только если в /etc/ssh/sshd_config разрешен вход под root
+(Так делать нельзя!)
+```
+sudo nano /etc/ssh/sshd_config
+PermitEmptyPasswords yes
+```
+
+
