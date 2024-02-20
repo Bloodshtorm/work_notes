@@ -17,7 +17,7 @@ server1 ansible_host=localhost
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
 ansible_connection=ssh
-ansible_user=bs
+ansible_user=root
 ansible_ssh_pass=1234
 ```
 
