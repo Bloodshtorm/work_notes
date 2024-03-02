@@ -31,7 +31,7 @@ uid [ неизвестно ] Launchpad PPA for Janek Bevendorff*
 apt-key export 0068FCD6 | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/keepassxc_key.gpg
 ```
 
-При желании вы можете удалить устаревший ключ из /etc/apt/trusted.gpg, запустив:
+При желании вы можете удалить устаревший ключ из */etc/apt/trusted.gpg*, запустив:
 
 ```
 sudo apt-key --keyring /etc/apt/trusted.gpg del 0068FCD6
