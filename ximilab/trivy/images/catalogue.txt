@@ -1,0 +1,100 @@
+
+0bd359b6d6e8 (alpine 3.4.6)
+===========================
+Total: 26 (UNKNOWN: 0, LOW: 0, MEDIUM: 18, HIGH: 6, CRITICAL: 2)
+
+┌──────────────┬────────────────┬──────────┬────────┬───────────────────┬───────────────┬──────────────────────────────────────────────────────────────┐
+│   Library    │ Vulnerability  │ Severity │ Status │ Installed Version │ Fixed Version │                            Title                             │
+├──────────────┼────────────────┼──────────┼────────┼───────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+│ libcrypto1.0 │ CVE-2018-0732  │ HIGH     │ fixed  │ 1.0.2k-r0         │ 1.0.2o-r1     │ openssl: Malicious server can send large prime to client     │
+│              │                │          │        │                   │               │ during DH(E) TLS...                                          │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2018-0732                    │
+│              ├────────────────┼──────────┤        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│              │ CVE-2017-3735  │ MEDIUM   │        │                   │ 1.0.2m-r0     │ openssl: Malformed X.509 IPAdressFamily could cause OOB read │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2017-3735                    │
+│              ├────────────────┤          │        │                   │               ├──────────────────────────────────────────────────────────────┤
+│              │ CVE-2017-3736  │          │        │                   │               │ openssl: bn_sqrx8x_internal carry bug on x86_64              │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2017-3736                    │
+│              ├────────────────┤          │        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│              │ CVE-2017-3737  │          │        │                   │ 1.0.2n-r0     │ openssl: Read/write after SSL object in error state          │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2017-3737                    │
+│              ├────────────────┤          │        │                   │               ├──────────────────────────────────────────────────────────────┤
+│              │ CVE-2017-3738  │          │        │                   │               │ openssl: rsaz_1024_mul_avx2 overflow bug on x86_64           │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2017-3738                    │
+│              ├────────────────┤          │        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│              │ CVE-2018-0733  │          │        │                   │ 1.0.2o-r0     │ openssl: Implementation bug in PA-RISC CRYPTO_memcmp         │
+│              │                │          │        │                   │               │ function allows attackers to forge authenticated...          │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2018-0733                    │
+│              ├────────────────┤          │        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│              │ CVE-2018-0734  │          │        │                   │ 1.0.2q-r0     │ openssl: timing side channel attack in the DSA signature     │
+│              │                │          │        │                   │               │ algorithm                                                    │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2018-0734                    │
+│              ├────────────────┤          │        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│              │ CVE-2018-0737  │          │        │                   │ 1.0.2o-r2     │ openssl: RSA key generation cache timing vulnerability in    │
+│              │                │          │        │                   │               │ crypto/rsa/rsa_gen.c allows attackers to...                  │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2018-0737                    │
+│              ├────────────────┤          │        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│              │ CVE-2018-0739  │          │        │                   │ 1.0.2o-r0     │ openssl: Handling of crafted recursive ASN.1 structures can  │
+│              │                │          │        │                   │               │ cause a stack overflow...                                    │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2018-0739                    │
+│              ├────────────────┤          │        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│              │ CVE-2018-5407  │          │        │                   │ 1.0.2q-r0     │ openssl: Side-channel vulnerability on SMT/Hyper-Threading   │
+│              │                │          │        │                   │               │ architectures (PortSmash)                                    │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2018-5407                    │
+├──────────────┼────────────────┼──────────┤        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│ libssl1.0    │ CVE-2018-0732  │ HIGH     │        │                   │ 1.0.2o-r1     │ openssl: Malicious server can send large prime to client     │
+│              │                │          │        │                   │               │ during DH(E) TLS...                                          │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2018-0732                    │
+│              ├────────────────┼──────────┤        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│              │ CVE-2017-3735  │ MEDIUM   │        │                   │ 1.0.2m-r0     │ openssl: Malformed X.509 IPAdressFamily could cause OOB read │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2017-3735                    │
+│              ├────────────────┤          │        │                   │               ├──────────────────────────────────────────────────────────────┤
+│              │ CVE-2017-3736  │          │        │                   │               │ openssl: bn_sqrx8x_internal carry bug on x86_64              │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2017-3736                    │
+│              ├────────────────┤          │        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│              │ CVE-2017-3737  │          │        │                   │ 1.0.2n-r0     │ openssl: Read/write after SSL object in error state          │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2017-3737                    │
+│              ├────────────────┤          │        │                   │               ├──────────────────────────────────────────────────────────────┤
+│              │ CVE-2017-3738  │          │        │                   │               │ openssl: rsaz_1024_mul_avx2 overflow bug on x86_64           │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2017-3738                    │
+│              ├────────────────┤          │        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│              │ CVE-2018-0733  │          │        │                   │ 1.0.2o-r0     │ openssl: Implementation bug in PA-RISC CRYPTO_memcmp         │
+│              │                │          │        │                   │               │ function allows attackers to forge authenticated...          │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2018-0733                    │
+│              ├────────────────┤          │        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│              │ CVE-2018-0734  │          │        │                   │ 1.0.2q-r0     │ openssl: timing side channel attack in the DSA signature     │
+│              │                │          │        │                   │               │ algorithm                                                    │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2018-0734                    │
+│              ├────────────────┤          │        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│              │ CVE-2018-0737  │          │        │                   │ 1.0.2o-r2     │ openssl: RSA key generation cache timing vulnerability in    │
+│              │                │          │        │                   │               │ crypto/rsa/rsa_gen.c allows attackers to...                  │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2018-0737                    │
+│              ├────────────────┤          │        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│              │ CVE-2018-0739  │          │        │                   │ 1.0.2o-r0     │ openssl: Handling of crafted recursive ASN.1 structures can  │
+│              │                │          │        │                   │               │ cause a stack overflow...                                    │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2018-0739                    │
+│              ├────────────────┤          │        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│              │ CVE-2018-5407  │          │        │                   │ 1.0.2q-r0     │ openssl: Side-channel vulnerability on SMT/Hyper-Threading   │
+│              │                │          │        │                   │               │ architectures (PortSmash)                                    │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2018-5407                    │
+├──────────────┼────────────────┼──────────┤        ├───────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+│ musl         │ CVE-2017-15650 │ HIGH     │        │ 1.1.14-r14        │ 1.1.14-r16    │ musl libc before 1.1.17 has a buffer overflow via crafted    │
+│              │                │          │        │                   │               │ DNS replies...                                               │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2017-15650                   │
+├──────────────┤                │          │        │                   │               │                                                              │
+│ musl-utils   │                │          │        │                   │               │                                                              │
+│              │                │          │        │                   │               │                                                              │
+│              │                │          │        │                   │               │                                                              │
+├──────────────┼────────────────┼──────────┤        ├───────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+│ zlib         │ CVE-2016-9841  │ CRITICAL │        │ 1.2.8-r2          │ 1.2.11-r0     │ zlib: Out-of-bounds pointer arithmetic in inffast.c          │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2016-9841                    │
+│              ├────────────────┤          │        │                   │               ├──────────────────────────────────────────────────────────────┤
+│              │ CVE-2016-9843  │          │        │                   │               │ zlib: Big-endian out-of-bounds pointer                       │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2016-9843                    │
+│              ├────────────────┼──────────┤        │                   │               ├──────────────────────────────────────────────────────────────┤
+│              │ CVE-2016-9840  │ HIGH     │        │                   │               │ zlib: Out-of-bounds pointer arithmetic in inftrees.c         │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2016-9840                    │
+│              ├────────────────┤          │        │                   │               ├──────────────────────────────────────────────────────────────┤
+│              │ CVE-2016-9842  │          │        │                   │               │ zlib: Undefined left shift of negative number                │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2016-9842                    │
+└──────────────┴────────────────┴──────────┴────────┴───────────────────┴───────────────┴──────────────────────────────────────────────────────────────┘

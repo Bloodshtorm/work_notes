@@ -1,0 +1,20 @@
+kubectl get deployments -n sock-shop
+NAME           READY   UP-TO-DATE   AVAILABLE   AGE
+carts          1/1     1            1           4h11m
+carts-db       1/1     1            1           4h11m
+catalogue      1/1     1            1           4h11m
+catalogue-db   1/1     1            1           4h11m
+front-end      1/1     1            1           4h11m
+orders         1/1     1            1           4h11m
+orders-db      1/1     1            1           4h11m
+payment        1/1     1            1           4h11m
+queue-master   1/1     1            1           4h11m
+rabbitmq       1/1     1            1           4h11m
+session-db     1/1     1            1           4h11m
+shipping       1/1     1            1           4h11m
+user           1/1     1            1           4h11m
+user-db        1/1     1            1           4h11m
+
+trivy k8s --include-namespaces sock-shop --report summary > ../../../trivy/trivy-namespaces-sock-shop.txt
+
+trivy k8s --include-namespaces sock-shop --report summary > ../../../trivy/trivy-namespaces-sock-shop.txt
