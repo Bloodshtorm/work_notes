@@ -1,0 +1,15 @@
+ift
+  APD02.07.04-81-kafka-if-client-ptzp
+  APD02.07.04-81-kafka-if-client-cnts-ozin-2
+lt
+preprod
+    rrtest.https-srv.cnts-zpnl
+        Account-statement.cnts-zpnl.test.vtb.ru
+        Account-statement.rs5-opnx01-cnts-cloud-pp.apps.rs5-opnx01.test.vtb.ru
+prod
+    APD02.07.04-81-kafka-p0-client-ptzp
+    APD02.07.04-81-kafka-p0-client-cnts-ozin-2
+    prod.https-srv.cnts-ozin
+    prod.https-srv.cnts-zpnl
+        Account-statement.cnts-zpnl.test.vtb.ru
+        Account-statement.rs5-opnx01-cnts-cloud-pp.apps.rs5-opnx01.test.vtb.ru
