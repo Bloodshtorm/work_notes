@@ -1,0 +1,75 @@
+---
+- hosts: postgres_servers
+  become: true
+  vars:
+    postgres_password: "1234"  # Укажите пароль здесь
+
+  tasks:
+    - name: Install PostgreSQL
+      apt:
+        name: postgresql
+        state: present
+
+    - name: Ensure PostgreSQL service is running
+      service:
+        name: postgresql
+        state: started
+        enabled: true
+
+    - name: Install psycopg2
+      apt:
+        name: python3-psycopg2
+        state: present
+
+    - name: Configure PostgreSQL to use trust authentication temporarily
+      lineinfile:
+        path: /etc/postgresql/15/main/pg_hba.conf
+        regexp: '^local\s+all\s+postgres\s+md5'
+        line: 'local   all             postgres                                trust'
+        state: present
+      notify:
+        - Restart PostgreSQL
+
+    - name: Restart PostgreSQL
+      service:
+        name: postgresql
+        state: restarted
+
+    - name: Wait for PostgreSQL to start
+      wait_for:
+        port: 5432
+        delay: 5
+        timeout: 30
+
+    - name: Set initial password for PostgreSQL user postgres
+      become_user: postgres
+      postgresql_user:
+        name: postgres
+        password: "{{ postgres_password }}"
+        state: present
+
+    - name: Configure PostgreSQL to use md5 authentication
+      lineinfile:
+        path: /etc/postgresql/15/main/pg_hba.conf
+        regexp: '^local\s+all\s+postgres\s+trust'
+        line: 'local   all             postgres                                md5'
+        state: present
+      notify:
+        - Restart PostgreSQL
+
+    - name: Restart PostgreSQL again
+      service:
+        name: postgresql
+        state: restarted
+
+    - name: Create PostgreSQL database
+      become_user: postgres
+      postgresql_db:
+        name: my_database
+        state: present
+
+  handlers:
+    - name: Restart PostgreSQL
+      service:
+        name: postgresql
+        state: restarted
