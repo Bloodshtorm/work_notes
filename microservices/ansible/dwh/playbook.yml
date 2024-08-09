@@ -1,0 +1,67 @@
+# playbook.yml
+---
+- name: Install PostgreSQL on PostgreSQL server
+  hosts: postgres_servers
+  become: yes
+  tasks:
+    - name: Install PostgreSQL
+      apt:
+        name: postgresql
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Ensure PostgreSQL service is running
+      service:
+        name: postgresql
+        state: started
+        enabled: yes
+
+    - name: Create PostgreSQL database
+      postgresql_db:
+        name: mydatabase
+        state: present
+
+    - name: Create PostgreSQL user
+      postgresql_user:
+        name: myuser
+        password: mypassword
+        role_attr_flags: LOGIN
+        state: present
+
+- name: Install Apache Airflow on Airflow server
+  hosts: airflow_servers
+  become: yes
+  tasks:
+    - name: Install required packages for Airflow
+      apt:
+        name:
+          - python3-pip
+          - python3-venv
+        state: present
+
+    - name: Create a Python virtual environment
+      command: python3 -m venv /opt/airflow_venv
+      args:
+        creates: /opt/airflow_venv
+
+    - name: Upgrade pip
+      pip:
+        requirements: /opt/airflow_venv/requirements.txt
+        virtualenv: /opt/airflow_venv
+        extra_args: --upgrade
+
+    - name: Install Airflow
+      pip:
+        name: apache-airflow
+        virtualenv: /opt/airflow_venv
+        state: present
+
+    - name: Start Airflow webserver
+      command: /opt/airflow_venv/bin/airflow webserver &
+      async: 10
+      poll: 0
+
+    - name: Start Airflow scheduler
+      command: /opt/airflow_venv/bin/airflow scheduler &
+      async: 10
+      poll: 0
