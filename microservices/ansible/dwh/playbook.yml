@@ -1,32 +1,29 @@
 # playbook.yml
 ---
-- name: Install PostgreSQL on PostgreSQL server
-  hosts: postgres_servers
-  become: yes
+- hosts: postgres_servers
+  become: true
   tasks:
     - name: Install PostgreSQL
       apt:
         name: postgresql
         state: present
-      when: ansible_os_family == "Debian"
 
     - name: Ensure PostgreSQL service is running
       service:
         name: postgresql
         state: started
-        enabled: yes
+        enabled: true
+
+    - name: Install psycopg2
+      apt:
+        name: python3-psycopg2
+        state: present
 
     - name: Create PostgreSQL database
       postgresql_db:
-        name: mydatabase
+        name: my_database
         state: present
 
-    - name: Create PostgreSQL user
-      postgresql_user:
-        name: myuser
-        password: mypassword
-        role_attr_flags: LOGIN
-        state: present
 
 - name: Install Apache Airflow on Airflow server
   hosts: airflow_servers
