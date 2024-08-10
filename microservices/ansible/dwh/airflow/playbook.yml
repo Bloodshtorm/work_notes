@@ -1,75 +1,84 @@
 ---
-- hosts: postgres_servers
+- hosts: airflow_servers
   become: true
   vars_files:
-    - secrets.yml
+    - ../secrets.yml  # Путь к вашему файлу с секретами
+
+  vars:
+    airflow_home: /home/airflow  # Определяем переменную airflow_home
 
   tasks:
-    - name: Install PostgreSQL
+    - name: Установка необходимых пакетов
       apt:
-        name: postgresql
+        name:
+          - python3-pip
+          - libpq-dev
+          - python3-dev
+          - build-essential
+          - python3-venv  # Убедитесь, что установлен пакет для создания виртуальных окружений
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Создание пользователя airflow
+      user:
+        name: airflow
+        shell: /bin/bash
+        home: "{{ airflow_home }}"  # Используем переменную airflow_home
         state: present
 
-    - name: Ensure PostgreSQL service is running
-      service:
-        name: postgresql
-        state: started
-        enabled: true
+    - name: Создание виртуального окружения
+      command: python3 -m venv {{ airflow_home }}/venv
+      args:
+        creates: "{{ airflow_home }}/venv"
 
-    - name: Install psycopg2
-      apt:
-        name: python3-psycopg2
-        state: present
+    - name: Копирование файла requirements.txt на удаленный сервер
+      copy:
+        src: ../airflow/requirements.txt  # Обновите путь, если файл находится на уровень выше
+        dest: "{{ airflow_home }}/requirements.txt"  # Путь на удаленном сервере
 
-    - name: Configure PostgreSQL to use trust authentication temporarily
-      lineinfile:
-        path: /etc/postgresql/15/main/pg_hba.conf
-        regexp: '^local\s+all\s+postgres\s+md5'
-        line: 'local   all             postgres                                trust'
-        state: present
+    - name: Установка Apache Airflow в виртуальном окружении
+      pip:
+        requirements: "{{ airflow_home }}/requirements.txt"  # Используйте файл requirements для установки
+        virtualenv: "{{ airflow_home }}/venv"
+      environment:
+        VIRTUAL_ENV: "{{ airflow_home }}/venv"
+        PATH: "{{ airflow_home }}/venv/bin:{{ ansible_env.PATH }}"
+
+    - name: Создание необходимых директорий
+      file:
+        path: "{{ airflow_home }}/{{ item }}"
+        state: directory
+        owner: airflow
+        group: airflow
+        mode: '0755'
+      loop:
+        - dags
+        - logs
+        - plugins
+
+    - name: Создание файла конфигурации Airflow
+      template:
+        src: airflow.cfg.j2
+        dest: "{{ airflow_home }}/airflow.cfg"  # Используем переменную airflow_home
       notify:
-        - Restart PostgreSQL
+        - инициализация базы данных
 
-    - name: Restart PostgreSQL
-      service:
-        name: postgresql
-        state: restarted
+    - name: Запуск Airflow webserver
+      shell: "{{ airflow_home }}/venv/bin/airflow webserver -D"
+      args:
+        chdir: "{{ airflow_home }}"
+      async: 10
+      poll: 0
 
-    - name: Wait for PostgreSQL to start
-      wait_for:
-        port: 5432
-        delay: 5
-        timeout: 30
-
-    - name: Set initial password for PostgreSQL user postgres
-      become_user: postgres
-      postgresql_user:
-        name: postgres
-        password: "{{ postgres_password }}"
-        state: present
-
-    - name: Configure PostgreSQL to use md5 authentication
-      lineinfile:
-        path: /etc/postgresql/15/main/pg_hba.conf
-        regexp: '^local\s+all\s+postgres\s+trust'
-        line: 'local   all             postgres                                md5'
-        state: present
-      notify:
-        - Restart PostgreSQL
-
-    - name: Restart PostgreSQL again
-      service:
-        name: postgresql
-        state: restarted
-
-    - name: Create PostgreSQL database
-      become_user: postgres
-      postgresql_db:
-        name: my_database
-        state: present
+    - name: Запуск Airflow scheduler
+      shell: "{{ airflow_home }}/venv/bin/airflow scheduler -D"
+      args:
+        chdir: "{{ airflow_home }}"
+      async: 10
+      poll: 0
 
   handlers:
-    - name: Restart PostgreSQL
-      service:
-        name: postgresql
-        state: restarted
+    - name: инициализация базы данных
+      command: "{{ airflow_home }}/venv/bin/airflow db init"
+      args:
+        chdir: "{{ airflow_home }}"
