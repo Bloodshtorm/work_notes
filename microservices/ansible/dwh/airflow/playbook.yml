@@ -2,10 +2,10 @@
 - hosts: airflow_servers
   become: true
   vars_files:
-    - ../secrets.yml  # Путь к вашему файлу с секретами
+    - ../secrets.yml
 
   vars:
-    airflow_home: /home/airflow  # Определяем переменную airflow_home
+    airflow_home: /home/airflow
 
   tasks:
     - name: Установка необходимых пакетов
@@ -15,7 +15,7 @@
           - libpq-dev
           - python3-dev
           - build-essential
-          - python3-venv  # Убедитесь, что установлен пакет для создания виртуальных окружений
+          - python3-venv
         state: present
       when: ansible_os_family == "Debian"
 
@@ -23,7 +23,7 @@
       user:
         name: airflow
         shell: /bin/bash
-        home: "{{ airflow_home }}"  # Используем переменную airflow_home
+        home: "{{ airflow_home }}"
         state: present
 
     - name: Создание виртуального окружения
@@ -33,12 +33,12 @@
 
     - name: Копирование файла requirements.txt на удаленный сервер
       copy:
-        src: ../airflow/requirements.txt  # Обновите путь, если файл находится на уровень выше
+        src: ../airflow/requirements.txt  # Убедитесь, что этот путь правильный
         dest: "{{ airflow_home }}/requirements.txt"  # Путь на удаленном сервере
 
     - name: Установка Apache Airflow в виртуальном окружении
       pip:
-        requirements: "{{ airflow_home }}/requirements.txt"  # Используйте файл requirements для установки
+        requirements: "{{ airflow_home }}/requirements.txt"
         virtualenv: "{{ airflow_home }}/venv"
       environment:
         VIRTUAL_ENV: "{{ airflow_home }}/venv"
@@ -59,16 +59,37 @@
     - name: Создание файла конфигурации Airflow
       template:
         src: airflow.cfg.j2
-        dest: "{{ airflow_home }}/airflow.cfg"  # Используем переменную airflow_home
+        dest: "{{ airflow_home }}/airflow.cfg"
       notify:
         - инициализация базы данных
 
+    - name: Создание systemd unit файла для Airflow webserver
+      copy:
+        dest: /etc/systemd/system/airflow-webserver.service
+        content: |
+          [Unit]
+          Description=Airflow webserver
+          After=network.target
+
+          [Service]
+          User=airflow
+          Group=airflow
+          WorkingDirectory={{ airflow_home }}
+          Environment="PATH={{ airflow_home }}/venv/bin"
+          ExecStart={{ airflow_home }}/venv/bin/airflow webserver --port 8080
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Перезагрузка systemd
+      command: systemctl daemon-reload
+
     - name: Запуск Airflow webserver
-      shell: "{{ airflow_home }}/venv/bin/airflow webserver -D"
-      args:
-        chdir: "{{ airflow_home }}"
-      async: 10
-      poll: 0
+      systemd:
+        name: airflow-webserver
+        state: started
+        enabled: true
 
     - name: Запуск Airflow scheduler
       shell: "{{ airflow_home }}/venv/bin/airflow scheduler -D"
