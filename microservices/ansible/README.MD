@@ -1,44 +1,25 @@
 # ansible list
 
-```
-sudo apt update
-sudo apt install ansible
+Тут представлен ansible playbook для postgress и airflow
 
-sudo mkdir /etc/ansible
-#Файл по умолчанию:
-sudo nano /etc/ansible/hosts
-```
+Структура простая, в dwh есть папки airflow postgres, они содержат playbook.
 
-Содержимое */etc/ansible/hosts*
-```
-[servers]
-server1 ansible_host=localhost
+Хосты беруться из inventory.ini
 
-[all:vars]
-ansible_python_interpreter=/usr/bin/python3
-ansible_connection=ssh
-ansible_user=root
-ansible_ssh_pass=1234
-```
-
-Сработает только если в /etc/ssh/sshd_config разрешен вход под root
-(Так делать нельзя!)
-```
-sudo nano /etc/ssh/sshd_config
-PermitEmptyPasswords yes
-```
-
-Запуск ситуативных команд (опционально)
-Убедившись, что узел управления Ansible может взаимодействовать с хостами, вы можете запускать на серверах ситуативные команды и плейбуки.
-
-Любая команда, обычно запускаемая на удаленном сервере через SSH, может быть запущена с помощью Ansible на серверах, заданных в файле инвентаризации. Например, вы можете проверить использования дисковых ресурсов всеми серверами с помощью следующей команды:
+А креды из secrets.yml ( Пароль: 1234 )
 
 ```
-ansible all -a "df -h" -u root
+# Шифровать/Дешифровать можно так:
+ansible-vault decrypt secrets.yml
+ansible-vault encrypt secrets.yml
+
+# У меня вот так:
+ansible-vault decrypt /home/bs/source/git/work_notes/microservices/ansible/dwh/secrets.yml
+ansible-vault encrypt /home/bs/source/git/work_notes/microservices/ansible/dwh/secrets.yml
 ```
 
-Как playbook мутить
+Запускать playbook так можно:
 ```
-mkdir source
-cd source/
+ansible-playbook -i inventory.ini airflow/playbook.yml --ask-become-pass --ask-vault-pass
+ansible-playbook -i inventory.ini postres/playbook.yml --ask-become-pass --ask-vault-pass
 ```
