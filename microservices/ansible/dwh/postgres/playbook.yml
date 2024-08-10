@@ -2,7 +2,7 @@
 - hosts: postgres_servers
   become: true
   vars_files:
-    - secrets.yml
+    - ../secrets.yml
 
   tasks:
     - name: Install PostgreSQL
