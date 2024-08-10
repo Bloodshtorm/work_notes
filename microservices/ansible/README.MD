@@ -23,3 +23,8 @@ ansible-vault encrypt /home/bs/source/git/work_notes/microservices/ansible/dwh/s
 ansible-playbook -i inventory.ini airflow/playbook.yml --ask-become-pass --ask-vault-pass
 ansible-playbook -i inventory.ini postres/playbook.yml --ask-become-pass --ask-vault-pass
 ```
+
+airflow не смог донастроить, он не запускает автоматом webserver. Запускать вручную:
+```
+/home/airflow/venv/bin/airflow webserver --port 8080
+```
