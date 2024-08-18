@@ -1,10 +1,6 @@
 // vars/createDslFolder.groovy
 
 def call(String folderName) {
-    // Вывод текущего каталога
-    def currentDir = sh(script: 'pwd', returnStdout: true).trim()
-    echo "Current directory: ${currentDir}"
-
     // Загрузите скрипт из vars/dsl/createFolder.groovy
     def scriptText = libraryResource 'dsl/createFolder.groovy'
     echo "Script content:\n${scriptText}"
