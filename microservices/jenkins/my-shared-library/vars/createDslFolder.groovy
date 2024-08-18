@@ -2,7 +2,7 @@
 
 def call(String folderName) {
     // Загрузите скрипт из vars/dsl/createFolder.groovy
-    def scriptText = libraryResource 'dsl/createFolder.groovy'
+    def scriptText = libraryResource 'vars/dsl/createFolder.groovy'
     echo "Script content:\n${scriptText}"
 
     // Замените placeholder ${folderName} на фактическое значение
