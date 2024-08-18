@@ -2,7 +2,7 @@
 
 def call(String folderName) {
     // Загрузите скрипт из vars/dsl/createFolder.groovy
-    def scriptText = libraryResource 'dsl/createFolder.groovy'
+    def scriptText = libraryResource 'vars/dsl/createFolder.groovy'
     
     // Запустите DSL скрипт с использованием jobDsl плагина
     jobDsl scriptText: scriptText,
