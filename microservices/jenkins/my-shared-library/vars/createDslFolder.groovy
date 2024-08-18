@@ -1,10 +1,9 @@
 // vars/createDslFolder.groovy
 
 def call(String folderName) {
-    // Загрузите скрипт из vars/dsl/createFolder.groovy
-    def scriptText = libraryResource 'vars/dsl/createFolder.groovy'
+    def scriptText = libraryResource 'dsl/createFolder.groovy'
+    echo "Loaded script: ${scriptText}"
     
-    // Запустите DSL скрипт с использованием jobDsl плагина
     jobDsl scriptText: scriptText,
            lookupStrategy: 'SEED_JOB',
            ignoreExisting: false,
