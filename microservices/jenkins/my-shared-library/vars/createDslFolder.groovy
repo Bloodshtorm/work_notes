@@ -1,18 +1,19 @@
-// vars/createDslFolder.groovy
-import dsl.CreateFolder
-
 def call(String folderName) {
     try {
-        echo "Вызов generateScript из CreateFolder"
-        def scriptText = CreateFolder.generateScript(folderName)
-        echo "Сгенерированный скрипт:\n${scriptText}"
+        // Прямо генерируем DSL-скрипт для создания папки
+        def scriptText = """
+        folder('${folderName}') {
+            description("This is the folder for ${folderName}")
+        }
+        """
+        echo "Скрипт сгенерирован:\n${scriptText}"
 
-        // Запуск DSL скрипта с использованием jobDsl плагина
+        // Запуск DSL-скрипта с использованием плагина jobDsl
         jobDsl scriptText: scriptText,
-               lookupStrategy: 'SEED_JOB',
-               ignoreExisting: false,
-               removedJobAction: "DISABLE",
-               sandbox: true
+            lookupStrategy: 'SEED_JOB',
+            ignoreExisting: false,
+            removedJobAction: "DISABLE",
+            sandbox: true
     } catch (Exception e) {
         error "Ошибка при выполнении скрипта: ${e.message}"
     }
