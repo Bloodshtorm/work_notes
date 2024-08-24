@@ -1,5 +1,12 @@
-// vars/dsl/createFolder.groovy
+// src/dsl/CreateFolder.groovy
+package dsl
 
-folder('${folderName}') {
-    description("This is the folder for ${folderName}")
+class CreateFolder {
+    static String generateScript(String folderName) {
+        return """
+        folder('${folderName}') {
+            description("This is the folder for ${folderName}")
+        }
+        """
+    }
 }
