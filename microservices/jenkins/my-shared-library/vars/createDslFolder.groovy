@@ -13,7 +13,7 @@ def call(String folderName) {
             lookupStrategy: 'SEED_JOB',
             ignoreExisting: false,
             removedJobAction: "DISABLE",
-            sandbox: true
+            sandbox: false
     } catch (Exception e) {
         error "Ошибка при выполнении скрипта: ${e.message}"
     }
