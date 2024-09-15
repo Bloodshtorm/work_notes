@@ -1,0 +1,6 @@
+directories:
+  - git
+  - wikidocs:
+      - local
+      - dokuwiki
+  - local-repository
