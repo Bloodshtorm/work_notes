@@ -2,7 +2,7 @@ import org.yaml.snakeyaml.Yaml
 
 def call() {
     // Загрузка YAML файла с использованием libraryResource
-    def yamlContent = libraryResource 'vars/dirrectory.yaml'  // Убедитесь в правильности названия файла
+    def yamlContent = libraryResource 'vars/dirrectory.yaml'
 
     // Парсинг YAML файла
     Yaml yaml = new Yaml()
@@ -18,9 +18,7 @@ def generateFolders(directories) {
         if (dir instanceof Map) {
             dir.each { parentDir, subDirs ->
                 createFolder(parentDir)
-                subDirs.each { subDir ->
-                    createFolder("${parentDir}/${subDir}")
-                }
+                generateFolders(subDirs)  // Рекурсивно создаём поддиректории
             }
         } else {
             createFolder(dir)
