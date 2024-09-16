@@ -1,44 +1,23 @@
 import org.yaml.snakeyaml.Yaml
-
-def call() {
-    // Загрузка YAML файла с использованием libraryResource
-    def yamlContent = libraryResource 'vars/dirrectory.yaml'
-    echo "YAML загружен: ${yamlContent}"
-
-    // Парсинг YAML файла
-    def parsedYaml = readYaml text: yamlContent
-
-    // Получаем список директорий
-    def directories = parsedYaml['directories']
-    echo "Директории: ${directories}"
-    generateFolders(directories)
-}
-
-def generateFolders(directories) {
-    directories.each { dir ->
-        if (dir instanceof Map) {
-            dir.each { parentDir, subDirs ->
-                createFolder(parentDir)
-                generateFolders(subDirs)  // Рекурсивно создаём поддиректории
-            }
-        } else {
-            createFolder(dir)
-        }
-    }
-}
+import com.cloudbees.hudson.plugins.folder.Folder
+import hudson.model.TopLevelItem
 
 def createFolder(String folderName) {
     def folderJob = Jenkins.instance.getItem(folderName)
     if (folderJob != null) {
-        try {
-            Jenkins.instance.removeItem(folderJob)
-            echo "Удалена существующая папка ${folderName}"
-        } catch (Exception e) {
-            error "Ошибка при удалении папки ${folderName}: ${e.message}"
+        if (folderJob instanceof Folder) {
+            try {
+                folderJob.delete()
+                echo "Удалена существующая папка ${folderName}"
+            } catch (Exception e) {
+                error "Ошибка при удалении папки ${folderName}: ${e.message}"
+            }
+        } else {
+            error "Объект с именем ${folderName} существует, но это не папка."
         }
     }
     try {
-        folderJob = Jenkins.instance.createProject(com.cloudbees.hudson.plugins.folder.Folder, folderName)
+        folderJob = Jenkins.instance.createProject(Folder.class, folderName)
         folderJob.description = "This is the folder for ${folderName}"
         folderJob.save()
         echo "Папка ${folderName} создана"
