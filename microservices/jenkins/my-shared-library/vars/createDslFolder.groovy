@@ -1,12 +1,11 @@
 import org.yaml.snakeyaml.Yaml
-import org.yaml.snakeyaml.constructor.Constructor
 
 def call() {
     // Загрузка YAML файла с использованием libraryResource
-    def yamlContent = libraryResource 'vars/dirrectory.yaml'
+    def yamlContent = libraryResource 'vars/dirrectory.yaml'  // Убедитесь в правильности названия файла
 
     // Парсинг YAML файла
-    Yaml yaml = new Yaml(new Constructor(Map))
+    Yaml yaml = new Yaml()
     Map parsedYaml = yaml.load(yamlContent)
 
     // Получаем список директорий
