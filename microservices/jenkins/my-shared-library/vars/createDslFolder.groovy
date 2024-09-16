@@ -2,16 +2,13 @@ import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
 
 def call() {
-    // Путь к файлу YAML
-    def yamlFilePath = "my-shared-library/vars/directory.yaml"
-    // Чтение YAML файла
-    def yamlFile = new File(yamlFilePath)
-    if (!yamlFile.exists()) {
-        error "YAML файл не найден: ${yamlFilePath}"
-    }
+    // Загрузка YAML файла с использованием libraryResource
+    def yamlContent = libraryResource 'vars/directory.yaml'
+
     // Парсинг YAML файла
     Yaml yaml = new Yaml(new Constructor(Map))
-    Map parsedYaml = yaml.load(yamlFile.text)
+    Map parsedYaml = yaml.load(yamlContent)
+
     // Получаем список директорий
     def directories = parsedYaml['directories']
     generateFolders(directories)
