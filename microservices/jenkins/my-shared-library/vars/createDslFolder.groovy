@@ -3,7 +3,7 @@ import org.yaml.snakeyaml.constructor.Constructor
 
 def call() {
     // Загрузка YAML файла с использованием libraryResource
-    def yamlContent = libraryResource 'vars/directory.yaml'
+    def yamlContent = libraryResource 'vars/dirrectory.yaml'
 
     // Парсинг YAML файла
     Yaml yaml = new Yaml(new Constructor(Map))
