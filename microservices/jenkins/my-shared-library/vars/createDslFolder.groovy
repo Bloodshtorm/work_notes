@@ -1,7 +1,7 @@
 def call() {
     // Загрузка YAML файла с использованием readYaml
-    def yamlFilePath = 'vars/dirrectory.yaml'
-    def yamlContent = readYaml(file: yamlFilePath)
+    def yamlContent = libraryResource 'vars/dirrectory.yaml'
+    def parsedYaml = readYaml text: yamlContent
 
     if (!yamlContent) {
         error "Не удалось загрузить YAML файл: ${yamlFilePath}"
