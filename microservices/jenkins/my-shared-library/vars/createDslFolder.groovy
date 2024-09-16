@@ -29,20 +29,15 @@ def generateFolders(directories) {
 
 def createFolder(String folderName) {
     try {
-        // Генерация и выполнение DSL скрипта для создания папок
-        def scriptText = """
-        folder('${folderName}') {
-            description("This is the folder for ${folderName}")
-        }
-        """
-        echo "Скрипт сгенерирован:\n${scriptText}"
-
-        jobDsl scriptText: scriptText,
-                lookupStrategy: 'SEED_JOB',
-                ignoreExisting: false,
-                removedJobAction: "DISABLE",
-                sandbox: false
+        def folderJob = Jenkins.instance.createProject(com.cloudbees.hudson.plugins.folder.Folder, folderName)
+        folderJob.description = "This is the folder for ${folderName}"
+        folderJob.save()
+        echo "Папка ${folderName} создана"
     } catch (Exception e) {
         error "Ошибка при создании папки ${folderName}: ${e.message}"
     }
 }
+
+createFolder('git')
+createFolder('wikidocs')
+createFolder('local-repository')
