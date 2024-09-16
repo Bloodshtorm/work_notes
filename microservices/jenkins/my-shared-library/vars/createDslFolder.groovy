@@ -1,15 +1,21 @@
-import org.yaml.snakeyaml.Yaml
-
 def call() {
-    // Загрузка YAML файла с использованием libraryResource
-    def yamlContent = libraryResource 'vars/dirrectory.yaml'
+    // Загрузка YAML файла с использованием readYaml
+    def yamlFilePath = 'vars/dirrectory.yaml'
+    def yamlContent = readYaml(file: yamlFilePath)
 
-    // Парсинг YAML файла
-    Yaml yaml = new Yaml()
-    Map parsedYaml = yaml.load(yamlContent)
+    if (!yamlContent) {
+        error "Не удалось загрузить YAML файл: ${yamlFilePath}"
+    }
+
+    echo "YAML загружен: ${yamlContent}"
 
     // Получаем список директорий
-    def directories = parsedYaml['directories']
+    def directories = yamlContent['directories']
+    if (!directories) {
+        error "В YAML файле отсутствует ключ 'directories'"
+    }
+
+    echo "Директории: ${directories}"
     generateFolders(directories)
 }
 
