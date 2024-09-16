@@ -28,8 +28,17 @@ def generateFolders(directories) {
 }
 
 def createFolder(String folderName) {
+    def folderJob = Jenkins.instance.getItem(folderName)
+    if (folderJob != null) {
+        try {
+            Jenkins.instance.removeItem(folderJob)
+            echo "Удалена существующая папка ${folderName}"
+        } catch (Exception e) {
+            error "Ошибка при удалении папки ${folderName}: ${e.message}"
+        }
+    }
     try {
-        def folderJob = Jenkins.instance.createProject(com.cloudbees.hudson.plugins.folder.Folder, folderName)
+        folderJob = Jenkins.instance.createProject(com.cloudbees.hudson.plugins.folder.Folder, folderName)
         folderJob.description = "This is the folder for ${folderName}"
         folderJob.save()
         echo "Папка ${folderName} создана"
@@ -38,6 +47,9 @@ def createFolder(String folderName) {
     }
 }
 
-createFolder('git')
-createFolder('wikidocs')
-createFolder('local-repository')
+def directories = ['git', 'wikidocs', 'local-repository']
+
+directories.each { dir ->
+    createFolder(dir)
+}
+
